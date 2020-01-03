@@ -50,6 +50,7 @@ const load = function loadVideo(item) {
                 VideoAudioKeypress.togglePlay($el[0]);
                 ev.preventDefault();
             })
+            .on('keydown', e => e.preventDefault())
             .on('ended', () => {
                 autoPlayNext = true;
                 this.next();
