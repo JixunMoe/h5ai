@@ -60,7 +60,7 @@ const load = function loadVideo(item) {
     });
 };
 
-const keypress = VideoAudioKeypress.create('pv-content-vid');
+const keypress = VideoAudioKeypress.create('pv-content-vid', true);
 
 const init = () => {
     if (settings.enabled) {

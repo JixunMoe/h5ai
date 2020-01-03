@@ -9,7 +9,8 @@ const togglePlay = el => {
     }
 };
 
-const createKeypressHandler = id => key => {
+// eslint-disable-next-line complexity
+const createKeypressHandler = (id, allowFullscreen) => key => {
     const el = document.getElementById(id);
     if (!el) {
         return false;
@@ -44,7 +45,7 @@ const createKeypressHandler = id => key => {
     case 70: // 'f' -- full screen
         if (document.fullscreenElement) {
             document.exitFullscreen();
-        } else {
+        } else if (allowFullscreen) {
             el.requestFullscreen();
         }
         break;

@@ -56,7 +56,7 @@ const load = function loadAudio(item) {
     });
 };
 
-const keypress = VideoAudioKeypress.create('pv-content-aud');
+const keypress = VideoAudioKeypress.create('pv-content-aud', false);
 const init = () => {
     if (settings.enabled) {
         preview.register(settings.types, {load, adjust, keypress});
