@@ -27,11 +27,11 @@ const createKeypressHandler = (id, allowFullscreen) => key => {
         break;
 
     case 38: // up
-        el.volume += volumeDelta;
+        el.volume = Math.min(1, el.volume + volumeDelta);
         break;
 
     case 40: // down
-        el.volume -= volumeDelta;
+        el.volume = Math.max(0, el.volume - volumeDelta);
         break;
 
     case 32: // space
