@@ -10,7 +10,7 @@ const settings = Object.assign({
 }, allsettings['preview-img']);
 const tpl = '<img id="pv-content-img"/>';
 
-const updateGui = () => {
+const adjust = () => {
     const el = dom('#pv-content-img')[0];
     if (!el) {
         return;
@@ -56,7 +56,7 @@ const load = item => {
 
 const init = () => {
     if (settings.enabled) {
-        preview.register(settings.types, load, updateGui);
+        preview.register(settings.types, {load, adjust});
     }
 };
 

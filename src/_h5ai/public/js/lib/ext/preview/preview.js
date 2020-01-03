@@ -1,4 +1,4 @@
-const {each, isFn, dom, includes, compact} = require('../../util');
+const {each, dom, includes, compact} = require('../../util');
 const event = require('../../core/event');
 const resource = require('../../core/resource');
 const allsettings = require('../../core/settings');
@@ -82,7 +82,7 @@ const updateGui = () => {
 
     centerContent();
 
-    if (isFn(session && session.adjust)) {
+    if (session) {
         session.adjust();
     }
 };
@@ -131,16 +131,23 @@ const dropEvent = ev => {
     ev.preventDefault();
 };
 
+// eslint-disable-next-line complexity
 const onKeydown = ev => {
     const key = ev.keyCode;
+
+    // Check if the plugin want to handle this key
+    if (session && session.keypress(key)) {
+        dropEvent(ev);
+        return;
+    }
 
     if (key === 27) { // esc
         dropEvent(ev);
         exit(); // eslint-disable-line no-use-before-define
-    } else if (key === 8 || key === 37) { // backspace, left
+    } else if (key === 8 || key === 37 || key === 33) { // backspace, left, page up
         dropEvent(ev);
         prev();
-    } else if (key === 13 || key === 32 || key === 39) { // enter, space, right
+    } else if (key === 13 || key === 32 || key === 39 || key === 34) { // enter, space, right, page down
         dropEvent(ev);
         next();
     } else if (key === 70) { // f
@@ -189,8 +196,8 @@ const showSpinner = (show, src, delay) => {
     $spinner.show();
 };
 
-const Session = (items, idx, load, adjust) => {
-    const inst = Object.assign(Object.create(Session.prototype), {items, load, adjust});
+const Session = (items, idx, hook) => {
+    const inst = Object.assign(Object.create(Session.prototype), {items, ...hook});
     inst.setIdx(idx);
     return inst;
 };
@@ -227,12 +234,22 @@ Session.prototype = {
             });
     },
 
+    load() {},
+    adjust() {},
+    keypress() {
+        return false;
+    },
+
     moveIdx(delta) {
         this.setIdx(this.idx + delta);
+    },
+
+    next() {
+        this.moveIdx(1);
     }
 };
 
-const register = (types, load, adjust) => {
+const register = (types, hook) => {
     const initItem = item => {
         if (item.$view && includes(types, item.type)) {
             item.$view.find('a').on('click', ev => {
@@ -243,7 +260,7 @@ const register = (types, load, adjust) => {
                     return includes(types, matchedItem.type) ? matchedItem : null;
                 }));
 
-                session = Session(matchedItems, matchedItems.indexOf(item), load, adjust);
+                session = Session(matchedItems, matchedItems.indexOf(item), hook);
                 enter();
             });
         }
