@@ -15,12 +15,27 @@ class Context {
         $this->request = $request;
         $this->setup = $setup;
 
-        $this->options = Json::load($this->setup->get('CONF_PATH') . '/options.json');
+        $conf_dir = $this->setup->get('CONF_PATH') . '/';
+        $conf_paths = array_map(function ($x) use ($conf_dir) {
+            return $conf_dir . $x;
+        }, ['options.json', 'options.default.json']);
+        $conf_path = self::array_find($conf_paths, 'file_exists');
+
+        $this->options = Json::load($conf_path);
 
         $this->passhash = $this->query_option('passhash', '');
         $this->options['hasCustomPasshash'] = strcasecmp($this->passhash, Context::$DEFAULT_PASSHASH) !== 0;
         unset($this->options['passhash']);
     }
+
+    private static function array_find(array $xs, callable $f) {
+        foreach ($xs as $x) {
+          if (call_user_func($f, $x) === true)
+            return $x;
+        }
+        return null;
+      }
+
 
     public function get_session() {
         return $this->session;
