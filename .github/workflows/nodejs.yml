@@ -13,9 +13,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x]
 
     steps:
+    - name: Cache
+      uses: actions/cache@v1.1.2
+      with:
+        # A directory to store and save the cache
+        path: node_modules
+        # An explicit key for restoring and saving the cache
+        key: node_deps
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -23,8 +30,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build
-    - name: Upload to Release
+    - run: mkdir -p build/unpack && cd build/unpack && unzip ../*.zip
+    - name: Upload
       uses: actions/upload-artifact@v2-preview
       with:
         name: h5ai
-        path: ./build/*.zip
+        path: ./build/unpack/*
