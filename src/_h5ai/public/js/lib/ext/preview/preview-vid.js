@@ -31,6 +31,7 @@ const adjust = () => {
 
 const addUnloadFn = el => {
     el.unload = () => {
+        el.pause();
         el.src = '';
         el.load();
     };
