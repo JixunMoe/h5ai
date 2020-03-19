@@ -22,7 +22,6 @@
     "resources": {
         "scripts": [],
         "styles": [
-            "//fonts.googleapis.com/css?family=Ubuntu:300,400,700%7CUbuntu+Mono:400,700"
         ]
     },
 
@@ -63,9 +62,9 @@
         "disableSidebar": false,
         "fallbackMode": false,
         "fastBrowsing": true,
-        "fonts": ["Ubuntu", "Roboto", "Helvetica", "Arial", "sans-serif"],
-        "fontsMono": ["Ubuntu Mono", "Monaco", "Lucida Sans Typewriter", "monospace"],
-        "hidden": ["^\\.", "^_h5ai"],
+        "fonts": ["system-ui", "Ubuntu", "Roboto", "Helvetica", "Arial", "sans-serif"],
+        "fontsMono": ["monospace", "monospace"],
+        "hidden": ["^\\.", "^_h5ai", "robots.txt", "favicon.ico"],
         "hideFolders": false,
         "hideIf403": true,
         "hideParentFolder": false,
@@ -127,7 +126,7 @@
     - alwaysVisible: boolean, always show download button (defaults to download the current folder)
     */
     "download": {
-        "enabled": true,
+        "enabled": false,
         "type": "php-tar",
         "packageName": null,
         "alwaysVisible": false
@@ -162,7 +161,7 @@
     - type: string, "php" (sloooow) or "shell-du" (sloow)
     */
     "foldersize": {
-        "enabled": true,
+        "enabled": false,
         "type": "php"
     },
 
@@ -185,7 +184,7 @@
     - qrColor: string, QR-Code fill color
     */
     "info": {
-        "enabled": true,
+        "enabled": false,
         "show": false,
         "qrcode": true,
         "qrFill": "#999",
@@ -323,7 +322,7 @@
     - checkboxes: boolean, show a checkbox on mouse over item
     */
     "select": {
-        "enabled": true,
+        "enabled": false,
         "clickndrag": true,
         "checkboxes": true
     },
