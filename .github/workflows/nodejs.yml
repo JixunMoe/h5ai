@@ -37,5 +37,5 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v2-preview
       with:
-        name: h5ai-$SHA8
+        name: h5ai-${{ env.SHA8 }}
         path: ./build/unpack/*
