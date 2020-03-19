@@ -24,6 +24,7 @@ class Context {
         $this->options = Json::load($conf_path);
 
         $this->passhash = $this->query_option('passhash', '');
+        $this->passsalt = $this->query_option('passsalt', '');
         $this->options['hasCustomPasshash'] = strcasecmp($this->passhash, Context::$DEFAULT_PASSHASH) !== 0;
         unset($this->options['passhash']);
     }
@@ -62,7 +63,7 @@ class Context {
     }
 
     public function login_admin($pass) {
-        $this->session->set(Context::$AS_ADMIN_SESSION_KEY, strcasecmp(hash('sha512', $pass), $this->passhash) === 0);
+        $this->session->set(Context::$AS_ADMIN_SESSION_KEY, strcasecmp(hash_hmac('sha512', $pass, $this->passsalt), $this->passhash) === 0);
         return $this->session->get(Context::$AS_ADMIN_SESSION_KEY);
     }
 
