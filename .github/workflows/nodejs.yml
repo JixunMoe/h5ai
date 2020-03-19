@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      SHA8: ${GITHUB_SHA::8}
 
     strategy:
       matrix:
@@ -30,9 +32,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build
-    - run: mkdir -p build/unpack && cd build/unpack && unzip ../*.zip
+    - name: unpack
+      run: mkdir -p build/unpack && cd build/unpack && unzip ../*.zip
     - name: Upload
       uses: actions/upload-artifact@v2-preview
       with:
-        name: h5ai-${GITHUB_SHA::8}
+        name: h5ai-$SHA8
         path: ./build/unpack/*
