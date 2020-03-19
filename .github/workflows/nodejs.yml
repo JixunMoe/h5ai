@@ -34,5 +34,5 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v2-preview
       with:
-        name: h5ai
+        name: h5ai-${GITHUB_SHA::8}
         path: ./build/unpack/*
