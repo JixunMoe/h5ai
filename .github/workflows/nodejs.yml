@@ -39,3 +39,9 @@ jobs:
       with:
         name: h5ai-release
         path: ./build/unpack/*
+    - name: Upload to Release
+      uses: JasonEtco/upload-to-release@v0.1.1
+      with:
+        args: ./build/*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
